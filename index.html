@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>primegrid</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1 class="text-center m-0">PrimeGrid Challenge Statistics</h1>
+    <p class="fst-italic text-center">Challenge statistics only available for 2023 for now. Very WIP. Feature request? Bug? Question? Please contact me on Discord at @comradeturtle or <a href="mailto:giorgosd1300@shadowct.eu">click here</a></p>
+    <div class="d-flex flex-row justify-content-center gap-2 align-items-center">
+        <div class="text-center">
+            <p class="m-0">Challenge</p>
+            <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" id="challDropTitle" type="button">All Challenges (2023)</button>
+                <div class="dropdown-menu" id="challDrop"><a class="dropdown-item" href="#" onclick="tableDraw(); document.getElementById(&#39;challDropTitle&#39;).innerText = `All Challenges (2023)`">All Challenges (2023)</a>
+                    <div class="dropdown-divider"></div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <p class="m-0">User</p><input type="search" id="userInp" placeholder="Filter by Username">
+        </div>
+    </div>
+    <div id="hr" class="d-flex justify-content-center">
+        <hr class="w-75">
+    </div>
+    <div id="loading" class="d-flex flex-row justify-content-center align-items-center gap-2 d-none"><span class="spinner-border" role="status"></span>
+        <h1>Loading..</h1>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="table-responsive w-75">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>User</th>
+                        <th>Team</th>
+                        <th id="crtask">Credit</th>
+                        <th id="crtask1">Tasks</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/index.js"></script>
+</body>
+
+</html>
