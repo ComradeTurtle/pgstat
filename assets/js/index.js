@@ -17,7 +17,7 @@ document.getElementById('userInp').addEventListener('keyup', (ctx) => {
     for (let i = 0; i < filtered.length; i++) {
         let row = document.createElement('tr');
 
-        row.appendChild(document.createElement('td')).innerText = i + 1;
+        row.appendChild(document.createElement('td')).innerText = filtered[i].pos;
 
         let username = document.createElement('td');
         username.innerText = filtered[i].username;
@@ -73,7 +73,6 @@ const tableDraw = async (series) => {
     else {
         data = await fetch(`https://pgapi.comradeturtle.dev/v1/points${series ? `?series=${series}` : ''}`).then((res) => res.json());
         window.sessionStorage.setItem(`data-${series ? series : 'total'}`, JSON.stringify(data));
-
     }
     
     let table = document.getElementById('tbody');
@@ -89,9 +88,10 @@ const tableDraw = async (series) => {
     }
 
     for (let i = 0; i < data.length; i++) {
+        data[i].pos = i + 1;
         let row = document.createElement('tr');
 
-        row.appendChild(document.createElement('td')).innerText = i + 1;
+        row.appendChild(document.createElement('td')).innerText = data[i].pos;
 
         let username = document.createElement('td');
         username.innerText = data[i].username;
@@ -117,7 +117,8 @@ const tableDraw = async (series) => {
 
         table.appendChild(row);
     }
-
+    
+    window.sessionStorage.setItem(`data-${series ? series : 'total'}`, JSON.stringify(data));
     document.getElementById('loading').classList.add('d-none');
 }
 
