@@ -1,3 +1,5 @@
+const API_BASE = `https://pgapi.comradeturtle.dev`
+
 document.getElementById('userInp').addEventListener('keyup', (ctx) => {
     const display = document.getElementById('tbody').getAttribute('displaying');
     const data = JSON.parse(window.sessionStorage.getItem(`data-indiv-${display}`));
@@ -5,7 +7,7 @@ document.getElementById('userInp').addEventListener('keyup', (ctx) => {
     let table = document.getElementById('tbody');
     table.innerHTML = "";
 
-    if (display === 'total') {
+    if (display.includes('total')) {
         document.getElementById('crtask').classList.add('d-none');
         document.getElementById('crtask1').classList.add('d-none');
     } else {
@@ -27,7 +29,7 @@ document.getElementById('userInp').addEventListener('keyup', (ctx) => {
 
         row.appendChild(document.createElement('td')).innerText = filtered[i].team;
 
-        if (display !== 'total') {
+        if (display && !display.includes('total')) {
             let credit = document.createElement('td');
             credit.innerText = filtered[i].credit;
             credit.style.cursor = 'pointer';
@@ -52,7 +54,7 @@ document.getElementById('teamInp').addEventListener('keyup', (ctx) => {
     let table = document.getElementById('tbodyTeam');
     table.innerHTML = "";
 
-    if (display === 'total') {
+    if (display.includes('total')) {
         document.getElementById('crtaskTeam').classList.add('d-none');
         document.getElementById('crtaskTeam1').classList.add('d-none');
     } else {
@@ -72,7 +74,7 @@ document.getElementById('teamInp').addEventListener('keyup', (ctx) => {
         teamname.style.cursor = 'pointer';
         row.appendChild(teamname);
 
-        if (display && display !== 'total') {
+        if (display && !display.includes('total')) {
             let credit = document.createElement('td');
             credit.innerText = filtered[i].credit;
             credit.style.cursor = 'pointer';
@@ -91,10 +93,15 @@ document.getElementById('teamInp').addEventListener('keyup', (ctx) => {
 })
 
 const populate = async () => {
-    const challenges = await fetch('https://pgapi.comradeturtle.dev/v1/challenges').then((res) => res.json());
+    const challenges = await fetch(`${API_BASE}/v1/challenges`).then((res) => res.json());
+    let years = [];
 
     let challContainer = document.getElementById('challDrop');
+    challenges.reverse();
     challenges.forEach((e) => {
+        let year = e.name.split('_')[0];
+        if (!years.includes(year)) years.push(year);
+
         let el = document.createElement('a');
         el.classList.add('dropdown-item');
         el.style.cursor = 'pointer';
@@ -116,9 +123,28 @@ const populate = async () => {
 
         challContainerTeam.appendChild(el);
     })
+
+    years.reverse();
+    years.forEach((e) => {
+        let el = document.createElement('a');
+        el.classList.add('dropdown-item');
+        el.style.cursor = 'pointer';
+        el.innerText = `All Challenges (${e})`;
+        el.onclick = () => { tableDraw(`total_${e}`); document.getElementById('challDropTitle').innerText = `All Challenges (${e})` }
+
+        let el2 = document.createElement('a');
+        el2.classList.add('dropdown-item');
+        el2.style.cursor = 'pointer';
+        el2.innerText = `All Challenges (${e})`;
+        el2.onclick = () => { tableDraw(`total_${e}`, 'team'); document.getElementById('challDropTitleTeam').innerText = `All Challenges (${e})` }
+
+        challContainer.prepend(el);
+        challContainerTeam.prepend(el2);
+    })
+
     fetchVer();
-    tableDraw();
-    tableDraw('total', 'team');
+    tableDraw(`total_${years[years.length - 1]}`);
+    tableDraw(`total_${years[years.length - 1]}`, 'team');
 }
 
 const tableDraw = async (series, mode = 'indiv') => {
@@ -129,7 +155,7 @@ const tableDraw = async (series, mode = 'indiv') => {
         data = JSON.parse(window.sessionStorage.getItem(`data-${mode}-${series ? series : 'total'}`));
     }
     else {
-        data = await fetch(`https://pgapi.comradeturtle.dev/v1/points${mode === 'indiv' ? '' : '/teams'}${series && series !== 'total' ? `?series=${series}` : ''}`).then((res) => res.json());
+        data = await fetch(`${API_BASE}/v1/points${mode === 'indiv' ? '' : '/teams'}${series && series !== 'total' ? `?series=${series}` : ''}`).then((res) => res.json());
         window.sessionStorage.setItem(`data-${mode}-${series ? series : 'total'}`, JSON.stringify(data));
     }
 
@@ -137,7 +163,7 @@ const tableDraw = async (series, mode = 'indiv') => {
     table.innerHTML = "";
     table.setAttribute('displaying', series ? series : 'total');
 
-    if (!series || series === 'total') {
+    if (!series || series.includes('total')) {
         document.getElementById(mode === 'indiv' ? 'crtask' : 'crtaskTeam').classList.add('d-none');
         document.getElementById(mode === 'indiv' ? 'crtask1' : 'crtaskTeam1').classList.add('d-none');
     } else {
@@ -160,7 +186,7 @@ const tableDraw = async (series, mode = 'indiv') => {
 
             row.appendChild(document.createElement('td')).innerText = data[i].team;
 
-            if (series) {
+            if (!series.includes('total')) {
                 let credit = document.createElement('td');
                 credit.innerText = data[i].credit;
                 credit.style.cursor = 'pointer';
@@ -184,7 +210,7 @@ const tableDraw = async (series, mode = 'indiv') => {
             teamname.style.cursor = 'pointer';
             row.appendChild(teamname);
 
-            if (series && series !== 'total') {
+            if (!series.includes('total')) {
                 let credit = document.createElement('td');
                 credit.innerText = data[i].credit;
                 credit.style.cursor = 'pointer';
@@ -207,7 +233,7 @@ const tableDraw = async (series, mode = 'indiv') => {
 }
 
 const fetchVer = async () => {
-    const data = await fetch('https://pgapi.comradeturtle.dev/v1/statistics').then((res) => res.json());
+    const data = await fetch(`${API_BASE}/v1/statistics`).then((res) => res.json());
 
     document.getElementById('ver').innerText = `${data.version}`;
     document.getElementById('ver').onclick = () => window.location.href = 'https://github.com/ComradeTurtle/pgstat/releases/tag/'+data.version;

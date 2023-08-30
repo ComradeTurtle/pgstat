@@ -11,7 +11,7 @@
 
 <body>
     <h1 class="text-center m-0">PrimeGrid Challenge Statistics</h1>
-    <p class="fst-italic text-center mb-0">Challenge statistics only available for 2023 for now. Very WIP. Feature request? Bug? Question? Please contact me on Discord at @comradeturtle or <a href="mailto:giorgosd1300@shadowct.eu">click here</a></p>
+    <p class="fst-italic text-center mb-0">Very Work In Progress. Feature request? Bug? Question? Please contact me on Discord at @comradeturtle or <a href="mailto:giorgosd1300@shadowct.eu">click here</a></p>
     <p class="fst-italic text-center">Current version:&nbsp;<span id="ver" class="hover-underline-animation" style="cursor: pointer;">Text</span></p>
     <div id="hr" class="d-flex justify-content-center">
         <hr class="w-75">
@@ -26,7 +26,7 @@
                     <div class="text-center">
                         <p class="m-0">Challenge</p>
                         <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" id="challDropTitle" type="button">All Challenges (2023)</button>
-                            <div class="dropdown-menu" id="challDrop"><a class="dropdown-item" href="#" onclick="tableDraw(); document.getElementById(&#39;challDropTitle&#39;).innerText = `All Challenges (2023)`">All Challenges (2023)</a>
+                            <div class="dropdown-menu" id="challDrop" style="height: 50vh;overflow-y: scroll;">
                                 <div class="dropdown-divider"></div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                     <div class="text-center">
                         <p class="m-0">Challenge</p>
                         <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" id="challDropTitleTeam" type="button">All Challenges (2023)</button>
-                            <div class="dropdown-menu" id="challDropTeam"><a class="dropdown-item" href="#" onclick="tableDraw(&#39;total&#39;, &#39;team&#39;); document.getElementById(&#39;challDropTitleTeam&#39;).innerText = `All Challenges (2023)`">All Challenges (2023)</a>
+                            <div class="dropdown-menu" id="challDropTeam" style="height: 50vh;overflow-y: scroll;">
                                 <div class="dropdown-divider"></div>
                             </div>
                         </div>
