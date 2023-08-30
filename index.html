@@ -6,48 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>primegrid</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
     <h1 class="text-center m-0">PrimeGrid Challenge Statistics</h1>
-    <p class="fst-italic text-center">Challenge statistics only available for 2023 for now. Very WIP. Feature request? Bug? Question? Please contact me on Discord at @comradeturtle or <a href="mailto:giorgosd1300@shadowct.eu">click here</a></p>
-    <div class="d-flex flex-row justify-content-center gap-2 align-items-center">
-        <div class="text-center">
-            <p class="m-0">Challenge</p>
-            <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" id="challDropTitle" type="button">All Challenges (2023)</button>
-                <div class="dropdown-menu" id="challDrop"><a class="dropdown-item" href="#" onclick="tableDraw(); document.getElementById(&#39;challDropTitle&#39;).innerText = `All Challenges (2023)`">All Challenges (2023)</a>
-                    <div class="dropdown-divider"></div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center">
-            <p class="m-0">User</p><input type="search" id="userInp" placeholder="Filter by Username">
-        </div>
-    </div>
+    <p class="fst-italic text-center mb-0">Challenge statistics only available for 2023 for now. Very WIP. Feature request? Bug? Question? Please contact me on Discord at @comradeturtle or <a href="mailto:giorgosd1300@shadowct.eu">click here</a></p>
+    <p class="fst-italic text-center">Current version:&nbsp;<span id="ver" class="hover-underline-animation" style="cursor: pointer;">Text</span></p>
     <div id="hr" class="d-flex justify-content-center">
         <hr class="w-75">
     </div>
     <div id="loading" class="d-flex flex-row justify-content-center align-items-center gap-2 d-none"><span class="spinner-border" role="status"></span>
         <h1>Loading..</h1>
     </div>
-    <div class="d-flex justify-content-center">
-        <div class="table-responsive w-75">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Position</th>
-                        <th>User</th>
-                        <th>Team</th>
-                        <th id="crtask">Credit</th>
-                        <th id="crtask1">Tasks</th>
-                        <th>Points</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    <tr></tr>
-                </tbody>
-            </table>
+    <div class="carousel slide" data-bs-ride="false" id="carousel-1">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="d-flex flex-row justify-content-center gap-2 align-items-center">
+                    <div class="text-center">
+                        <p class="m-0">Challenge</p>
+                        <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" id="challDropTitle" type="button">All Challenges (2023)</button>
+                            <div class="dropdown-menu" id="challDrop"><a class="dropdown-item" href="#" onclick="tableDraw(); document.getElementById(&#39;challDropTitle&#39;).innerText = `All Challenges (2023)`">All Challenges (2023)</a>
+                                <div class="dropdown-divider"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="m-0">User</p><input type="search" id="userInp" placeholder="Filter by Username">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="table-responsive w-75">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>User</th>
+                                    <th>Team</th>
+                                    <th id="crtask">Credit</th>
+                                    <th id="crtask1">Tasks</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                                <tr></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex flex-row justify-content-center gap-2 align-items-center">
+                    <div class="text-center">
+                        <p class="m-0">Challenge</p>
+                        <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" id="challDropTitleTeam" type="button">All Challenges (2023)</button>
+                            <div class="dropdown-menu" id="challDropTeam"><a class="dropdown-item" href="#" onclick="tableDraw(&#39;total&#39;, &#39;team&#39;); document.getElementById(&#39;challDropTitleTeam&#39;).innerText = `All Challenges (2023)`">All Challenges (2023)</a>
+                                <div class="dropdown-divider"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="m-0">Team</p><input type="search" id="teamInp" placeholder="Filter by Team name">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="table-responsive w-75">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>Team</th>
+                                    <th id="crtaskTeam">Credit</th>
+                                    <th id="crtaskTeam1">Tasks</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyTeam">
+                                <tr></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div style="--bs-body-color: var(--bs-emphasis-color);--bs-dark: var(--bs-emphasis-color);--bs-dark-rgb: 255,255,255;"><a class="carousel-control-prev" href="#carousel-1" role="button" data-bs-slide="prev" style="height: 50px;"><span class="carousel-control-prev-icon" style="/*background-color: white !important;*/filter: initial;"></span><span class="visually-hidden">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button" data-bs-slide="next" style="height: 50px;"><span class="carousel-control-next-icon" style="filter: initial;"></span><span class="visually-hidden">Next</span></a></div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/index.js"></script>
