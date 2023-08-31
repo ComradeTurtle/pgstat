@@ -22,3 +22,15 @@
   transform-origin: bottom left;
 }
 
+@media (max-width: 1000px) {
+  table {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1001px) {
+  table {
+    width: 75%;
+  }
+}
+
