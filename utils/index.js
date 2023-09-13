@@ -54,14 +54,15 @@ export const getValues = async () => {
     }
 }
 
-export const tableDraw = async (series, mode = 'indiv', isStarting = false) => {
+export const tableDraw = async (series, mode = 'indiv', isStarting = false, bypass = false) => {
     useState("isStarting").value = isStarting;
 
     console.log(`hello, tableDraw(${series}, ${mode}, ${isStarting})`);
     return new Promise(async (resolve, reject) => {
         let data;
         if (isStarting) {
-            console.log(`Overriding selection, we're starting!`)
+            console.log(`Overriding selection, we're starting!`);
+            if (!bypass) initUpdate(series);
             data = await fetch(`https://pgapi.comradeturtle.dev/v1/points${mode === 'indiv' ? '' : '/teams'}${series && series !== 'total' ? `?series=${series}` : ''}`).then((res) => res.json());
         } else if (useState(`data-${mode}-${series ? series : 'total'}`).value) {
             console.log(`Reusing state data-${mode}-${series ? series : 'total'}`);
@@ -70,6 +71,13 @@ export const tableDraw = async (series, mode = 'indiv', isStarting = false) => {
             console.log(`Fetching from API https://pgapi.comradeturtle.dev/v1/points${mode === 'indiv' ? '' : '/teams'}${series && series !== 'total' ? `?series=${series}` : ''}`)
             data = await fetch(`https://pgapi.comradeturtle.dev/v1/points${mode === 'indiv' ? '' : '/teams'}${series && series !== 'total' ? `?series=${series}` : ''}`).then((res) => res.json());
             useState(`data-${mode}-${series ? series : 'total'}`, () =>  data);
+        }
+
+        if (!isStarting) {
+            if (useState("updInterval").value) {
+                clearInterval(useState("updInterval").value);
+                console.log(`interval cleared tableDraw`);
+            }
         }
 
         for (let i = 0; i < data.length; i++) {
@@ -153,4 +161,34 @@ export const tableDraw = async (series, mode = 'indiv', isStarting = false) => {
 export const getStatistics = async () => {
     const data = await fetch(`https://pgapi.comradeturtle.dev/v1/statistics`).then((res) => res.json());
     useState("appVersion").value = data.version;
+}
+
+export const initUpdate = async (series) => {
+    let i = 120;
+    const stats = await fetch(`https://pgapi.comradeturtle.dev/v1/challenges`).then((res) => res.json());
+    useState("lastUpdate").value = new Date((stats.find((s) => s.name === series).updated) * 1000);
+
+    const interval = setInterval(async () => {
+        i--;
+        console.log(`interval ${i}`)
+        useState("updCountdown").value = i;
+        if (i === 0) {
+            i = 120;
+
+            const route = useRoute();
+            const mode = route.path === '/teams' ? 'team' : 'indiv';
+            const stats = await fetch(`https://pgapi.comradeturtle.dev/v1/challenges`).then((res) => res.json());
+
+            useState("lastUpdate").value = new Date((stats.find((s) => s.name === series).updated) * 1000);
+            await tableDraw(series, mode, true, true);
+        }
+    }, 1000)
+
+    useState("updInterval").value = interval;
+}
+
+export const getMinutes = (value) => {
+    const minutes = Math.floor(value / 60);
+    const seconds = value % 60;
+    return `${minutes}m${seconds === 0 ? '' : ` ${seconds}s`}`;
 }

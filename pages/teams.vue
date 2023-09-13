@@ -6,7 +6,7 @@ const tableColumns = useState("tableColumns");
 
 const lastUpdate = useState("lastUpdate");
 const isStarting = useState("isStarting");
-
+const updCountdown = useState("updCountdown");
 const appVersion = useState("appVersion");
 
 const q = ref("");
@@ -27,9 +27,22 @@ const dropdownUI = {
 }
 
 onMounted(() => {
+  if (useState("updInterval").value) {
+    clearInterval(useState("updInterval").value);
+    console.log(`interval cleared index.vue`);
+  }
+
   getStatistics();
   getValues('team');
 })
+
+onUnmounted(() => {
+  if (useState("updInterval").value) {
+    clearInterval(useState("updInterval").value);
+    console.log(`interval cleared index.vue`);
+  }
+})
+
 </script>
 <template>
   <StructuresFlex column items="center" class="gap-2">
@@ -42,7 +55,7 @@ onMounted(() => {
 
     <StructuresFlex column class="overflow-x-auto w-full lg:w-auto">
       <UInput v-model="q" placeholder="Search Username / Team Name" />
-      <h1 v-if="isStarting" class="pt-2 text-center">{{ lastUpdate === 0 ? 'Waiting for updates..' : `Last Update: ${new Date(lastUpdate).toLocaleString()}` }}</h1>
+      <h1 v-if="isStarting" class="pt-2 text-center">{{ lastUpdate === 0 ? 'Waiting for updates..' : `Last Update: ${new Date(lastUpdate).toLocaleString()}` }} {{ updCountdown !== -1 ? `(Next update in ${getMinutes(updCountdown)})` : '' }}</h1>
       <UTable v-if="![null, undefined].includes(tableColumns)" :rows="filteredContent" :columns="tableColumns" :empty-state="{ icon: 'i-mdi-database-remove', label: 'No items. If the challenge is starting soon, please allow the server some time to update. Statistics are renewed every 15 minutes.'}">
         <template #expected-header>
           <StructuresFlex items="center" justify="center">

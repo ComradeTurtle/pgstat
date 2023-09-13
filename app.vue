@@ -6,6 +6,8 @@ useState("dropdownLabel", () => "Challenge List");
 useState("lastUpdate", () => 0);
 useState("isStarting", () => false);
 useState("appVersion", () => "Loading..");
+useState("updCountdown", () => -1);
+useState("updInterval", () => null);
 
 useHead({
   htmlAttrs: {
