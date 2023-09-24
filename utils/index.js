@@ -85,14 +85,6 @@ export const tableDraw = async (series, mode = 'indiv', isStarting = false, bypa
         }
 
         let isStartingCols = [];
-        if (isStarting) {
-            isStartingCols = [
-                {
-                    key: 'expected',
-                    label: 'Expected Position'
-                }
-            ]
-        }
 
         let teamIndivCols = [];
         if (mode === 'team') {

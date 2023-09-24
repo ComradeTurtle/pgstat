@@ -57,14 +57,6 @@ onUnmounted(() => {
       <UInput v-model="q" placeholder="Search Username / Team Name" />
       <h1 v-if="isStarting" class="pt-2 text-center">{{ lastUpdate === 0 ? 'Waiting for updates..' : `Last Update: ${new Date(lastUpdate).toLocaleString()}` }} {{ updCountdown !== -1 ? `(Next update in ${getMinutes(updCountdown)})` : '' }}</h1>
       <UTable v-if="![null, undefined].includes(tableColumns)" :rows="filteredContent" :columns="tableColumns" :empty-state="{ icon: 'i-mdi-database-remove', label: 'No items. If the challenge is starting soon, please allow the server some time to update. Statistics are renewed every 15 minutes.'}">
-        <template #expected-header>
-          <StructuresFlex items="center" justify="center">
-            <span class="mr-2">Expected Position</span>
-            <UTooltip text="Expected points based on credit change since last update. VERY experimental!">
-              <UIcon name="i-mdi-help-circle-outline" />
-            </UTooltip>
-          </StructuresFlex>
-        </template>
       </UTable>
     </StructuresFlex>
   </StructuresFlex>
