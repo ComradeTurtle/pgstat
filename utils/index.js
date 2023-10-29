@@ -33,7 +33,7 @@ export const getValues = async () => {
             click: () => {
                 dropdownLabel.value = `${inx}/${year} | ${e.desc} (${e.projects})`;
                 tableContent.value = [];
-                if(defaultChallenge.name === `${year}_${inx}`) tableDraw(`${year}_${inx}`, mode, true);
+                if(defInx !== -1 && defaultChallenge.name === `${year}_${inx}`) tableDraw(`${year}_${inx}`, mode, true);
                 else tableDraw(`${year}_${inx}`, mode);
             }
         })
@@ -44,7 +44,7 @@ export const getValues = async () => {
     challengeDropdown.value.push(challengeList);
 
     // search for object that has attribute isStarting = true, and set it as default
-    if (defaultChallenge) {
+    if (defInx !== -1) {
         dropdownLabel.value = `${defaultChallenge.name.split('_')[1]}/${defaultChallenge.name.split('_')[0]} | ${defaultChallenge.desc} (${defaultChallenge.projects})`;
         await tableDraw(defaultChallenge.name, mode, true);
     } else {
